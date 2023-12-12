@@ -1,6 +1,6 @@
 import { Page, expect } from '@playwright/test'
 
-export class commonActions {
+export class CommonActions {
   readonly page: Page
 
   constructor(page: Page) {
@@ -22,10 +22,5 @@ export class commonActions {
   async checkVisibility(element: string) {
     const visiblity = await this.page.locator(element).isVisible()
     expect(visiblity).toBeTruthy()
-  }
-
-  //Select option from a provided dropdown.
-  async selectOptionFromDropdown(dropdown: string, option: string) {
-    await this.page.selectOption(dropdown, option)
   }
 }

@@ -1,7 +1,7 @@
 import { Page } from '@playwright/test'
-import loginData from '../data/login.data.json'
+import loginPage from '../pages/login.page'
 
-export class loginActions {
+export class LoginActions {
   readonly page: Page
 
   constructor(page: Page) {
@@ -14,13 +14,9 @@ export class loginActions {
   }
 
   //Login with the provided credentials.
-  async loginWithCredentials(
-    userNameField: string,
-    passwordField: string,
-    loginButton: string
-  ) {
-    await this.page.locator(userNameField).fill(loginData.userName)
-    await this.page.locator(passwordField).fill(loginData.password)
-    await this.page.locator(loginButton).click()
+  async loginWithCredentials(userName: string, password: string) {
+    await this.page.locator(loginPage.userNameFieldSelector).fill(userName)
+    await this.page.locator(loginPage.passwordFieldSelector).fill(password)
+    await this.page.locator(loginPage.loginButtonSelector).click()
   }
 }

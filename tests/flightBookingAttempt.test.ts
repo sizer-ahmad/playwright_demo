@@ -1,6 +1,7 @@
-import { test, chromium, Browser, Page } from '@playwright/test'
-import { commonActions } from '../actions/common.action'
-import { loginActions } from '../actions/login.action'
+import { test } from '@playwright/test'
+import { CommonActions } from '../actions/common.action'
+import { LoginActions } from '../actions/login.action'
+import { FlightBookingActions } from '../actions/flightBooking.action'
 import loginPage from '../pages/login.page'
 import loginData from '../data/login.data.json'
 import flightBookingPage from '../pages/flightBooking.page'
@@ -8,82 +9,43 @@ import flightBookingData from '../data/flightBooking.data.json'
 
 test.describe('Booking a flight.', () => {
   test.beforeEach(async ({ page }) => {
-    const login = new loginActions(page)
+    const login = new LoginActions(page)
+    
     //Login to the page before each test.
     await login.goToLoginPage()
-    await login.loginWithCredentials(
-      loginPage.userNameFieldSelector,
-      loginPage.passwordFieldSelector,
-      loginPage.loginButtonSelector
-    )
+    await login.loginWithCredentials(loginData.userName, loginData.password)
   })
 
   test('Validate the login.', async ({ page }) => {
-    const login = new loginActions(page)
-    //Validate the login.
-    await new commonActions(page).validateTextInElement(
+    const commonAction = new CommonActions(page)
+
+    //Validate the successfully login message.
+    await commonAction.validateTextInElement(
       loginPage.loginValidationTextSelector,
       loginData.validationText
     )
   })
 
-  test('Attempt to book a flight.', async ({ page }) => {
-    const commonAction = new commonActions(page)
+  test('Varify the flight checking functionality.', async ({ page }) => {
+    const commonAction = new CommonActions(page)
+    const flightBookingAction = new FlightBookingActions(page)
+
+    const formData = {
+      flightTypeSelector: flightBookingPage.oneWayFlightTypeRadioButtonSelector,
+      serviceClassSelector: flightBookingPage.firstClassServiceRadioButtonSelector,
+      ...flightBookingData.formData
+    }
+
     //Click the flights button.
     await commonAction.clickOnElement(flightBookingPage.flightsButtonSelector)
+
     //Validate the flight finder header.
     await commonAction.checkVisibility(
       flightBookingPage.flightFinderPageValidationLocator
     )
 
-    //Select the flight type.
-    await commonAction.clickOnElement(
-      flightBookingPage.oneWayFlightTypeRadioButtonSelector
-    )
-    //Select passenger count.
-    await commonAction.selectOptionFromDropdown(
-      flightBookingPage.passengersDropdownSelector,
-      flightBookingData.passengerCount
-    )
-    //Select departing from location.
-    await commonAction.selectOptionFromDropdown(
-      flightBookingPage.departingFromDropdownSelector,
-      flightBookingData.departingFrom
-    )
-    //Select departing month.
-    await commonAction.selectOptionFromDropdown(
-      flightBookingPage.departingMonthDropdownSelector,
-      flightBookingData.departingMonth
-    )
-    //Select departing day.
-    await commonAction.selectOptionFromDropdown(
-      flightBookingPage.departingDayDropdownSelector,
-      flightBookingData.departingDay
-    )
-    //Select arriving location.
-    await commonAction.selectOptionFromDropdown(
-      flightBookingPage.arrivingInDropdownSelector,
-      flightBookingData.arrivingIn
-    )
-    //Select returning month.
-    await commonAction.selectOptionFromDropdown(
-      flightBookingPage.returningMonthDropdownSelector,
-      flightBookingData.returningMonth
-    )
-    //Select returning day.
-    await commonAction.selectOptionFromDropdown(
-      flightBookingPage.returningDayDropdownSelector,
-      flightBookingData.returningDay
-    )
-    //Select the service class.
-    await commonAction.clickOnElement(
-      flightBookingPage.firstClassServiceRadioButtonSelector
-    )
-    //Select airline.
-    await commonAction.selectOptionFromDropdown(
-      flightBookingPage.airlineDropdownSelector,
-      flightBookingData.airlineOption
-    )
+    //Fill the flight booking form.
+    await flightBookingAction.fillFlightBookingForm(formData)
 
     //Click the continue button.
     await commonAction.clickOnElement(flightBookingPage.continueButtonSelector)
