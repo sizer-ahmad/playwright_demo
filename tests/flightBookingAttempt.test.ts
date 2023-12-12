@@ -6,9 +6,6 @@ import loginData from '../data/login.data.json'
 import flightBookingPage from '../pages/flightBooking.page'
 import flightBookingData from '../data/flightBooking.data.json'
 
-// let browser: Browser
-// let page: Page
-
 test.describe('Booking a flight.', () => {
   test.beforeEach(async ({ page }) => {
     const login = new loginActions(page)
@@ -94,7 +91,7 @@ test.describe('Booking a flight.', () => {
     //Validate the result.
     await commonAction.validateTextInElement(
       flightBookingPage.flightFindStatusTextSelector,
-      flightBookingData.flightFindStatysText
+      flightBookingData.flightFindStatusText
     )
 
     //Click the back to home button.

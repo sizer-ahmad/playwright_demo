@@ -4,18 +4,18 @@ This is a demo project build in Playwright using Typescript.
 
 ## Architecture
 
-**- actions:** The _actions_ folder has the action classes to execute different functions. These can be common functions or page wise functions.
+- **actions:** The _actions_ folder has the action classes to execute different functions. These can be common functions or page wise functions.
 
-**- pages:** The _pages_ folder contains the object classes to holds the locators of the individual pages.
+- **pages:** The _pages_ folder contains the object classes to holds the locators of the individual pages.
 
-**- data:** The _data_ folder has the data files for individual pages that will be used in the tests.
+- **data:** The _data_ folder has the data files for individual pages that will be used in the tests.
 
-**- tests:** The _tests_ folder contains the main test scripts.
+- **tests:** The _tests_ folder contains the main test scripts.
 
 ## Prerequisites
 
 - Visual Studio Code (1.84.x or up)
-- Node (18.x.X or up)
+- Node (18.x.x or up)
 
 ## Initial Setup
 
